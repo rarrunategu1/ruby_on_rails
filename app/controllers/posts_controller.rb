@@ -4,7 +4,9 @@ class PostsController < ApplicationController
     @posts = Post.all
   end
 
-  def new; end
+  def new
+    @post = Post.new
+  end
 
   def show
     # will get the single post from create
@@ -16,12 +18,13 @@ class PostsController < ApplicationController
     # render plain: params[:post].inspect
 
     @post = Post.new(post_params)
-    @post.save
-    redirect_to @post
-
-    # private method tells it that we want to allow it to have a title and a body
+    if @post.save
+      redirect_to @post
+    else
+      render 'new'
+    end
   end
-
+    # private method tells it that we want to allow it to have a title and a body
   private def post_params
     params.require(:post).permit(:title, :body)
     end
